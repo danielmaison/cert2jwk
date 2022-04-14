@@ -25,7 +25,7 @@ jobs:
     - name: Build Native
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
-        mvnw package -Dquarkus.package.type=native -Pversion="${{ github.event.release.tag_name }}"
+        mvnw package -Pnative -Drevision="${{ github.event.release.tag_name }}"
       shell: cmd
     - name: Upload Native Image (Win64)
       id: upload-native-image-win64

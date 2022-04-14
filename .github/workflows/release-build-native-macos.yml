@@ -18,7 +18,7 @@ jobs:
     - name: install native-image
       run: gu install native-image
     - name: Build Native
-      run: ./mvnw package -Dquarkus.package.type=native -Pversion="${{ github.event.release.tag_name }}"
+      run: ./mvnw package -Pnative -Drevision="${{ github.event.release.tag_name }}"
     - name: Upload Native Image (MacOS)
       id: upload-native-image-macos
       uses: actions/upload-release-asset@v1
