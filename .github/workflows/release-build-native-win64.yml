@@ -1,0 +1,40 @@
+name: release-build-native-win64
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up GraalVM
+      uses: DeLaGuardo/setup-graalvm@3
+      with:
+        graalvm-version: '21.3.0.java11'
+    - name: install native-image
+      run: |
+        %JAVA_HOME%/bin/gu.cmd install native-image
+      shell: cmd
+      # See https://github.com/actions/virtual-environments/issues/785
+    - name: configure Pagefile
+      uses: al-cheb/configure-pagefile-action@v1.2
+    - name: Build Native
+      run: |
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
+        mvnw package -Dquarkus.package.type=native -Pversion="${{ github.event.release.tag_name }}"
+      shell: cmd
+    - name: Upload Native Image (Win64)
+      id: upload-native-image-win64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./target/cert-jwk-${{ github.event.release.tag_name }}-runner.exe
+        asset_name: cert2jwk-${{ github.event.release.tag_name }}-win64.exe
+        asset_label: win64
+        asset_content_type: application/octet-stream
