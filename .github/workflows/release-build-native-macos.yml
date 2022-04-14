@@ -17,6 +17,8 @@ jobs:
         graalvm-version: '21.3.0.java11'
     - name: install native-image
       run: gu install native-image
+    - name: Grant execute permission for mvnw
+      run: chmod +x mvnw
     - name: Build Native
       run: ./mvnw package -Pnative -Drevision="${{ github.event.release.tag_name }}"
     - name: Upload Native Image (MacOS)
