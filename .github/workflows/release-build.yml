@@ -3,6 +3,14 @@ name: release-build
 on:
   release:
     types: [created]
+  push:
+    branches:
+    - master
+    - 'feature/**'
+  pull_request:
+    branches:
+    - master
+    - 'feature/**'
 
 jobs:
   build:
@@ -14,7 +22,7 @@ jobs:
     - name: Set up GraalVM
       uses: DeLaGuardo/setup-graalvm@master
       with:
-        graalvm-version: '21.3.0.java11'
+        graalvm-version: '22.2.0.java11'
     - name: install native-image
       run: gu install native-image
     - name: Grant execute permission for mvnw
