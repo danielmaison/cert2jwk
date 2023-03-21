@@ -6,7 +6,7 @@
   <artifactId>cert-jwk</artifactId>
   <version>${revision}</version>
   <properties>
-    <revision>1.0.0-SNAPSHOT</revision>
+    <revision>1.1.0-SNAPSHOT</revision>
     <compiler-plugin.version>3.11.0</compiler-plugin.version>
     <failsafe.useModulePath>false</failsafe.useModulePath>
     <maven.compiler.release>11</maven.compiler.release>
