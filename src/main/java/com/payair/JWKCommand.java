@@ -1,15 +1,15 @@
 package com.payair;
 
 import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.util.JSONObjectUtils;
+import org.bouncycastle.util.encoders.Hex;
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Parameters;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
+import java.util.Base64;
+import java.util.Map;
 import java.util.Optional;
 
 @CommandLine.Command(name = "cert2jwk", description = "Converts X509 certificate to jwk from standard input or file")
@@ -20,6 +20,9 @@ public class JWKCommand implements Runnable {
 
     @CommandLine.Option(names = { "-k", "--kid" }, paramLabel = "keyId", description = "JWK key id. Defaults to certificate serial number")
     Optional<String> kid;
+
+    @CommandLine.Option(names = {"--hash-as-hex"}, paramLabel = "hash-as-hex", description = "Outputs the value of x5t#S256 as hex instead of Base64Url")
+    boolean hashAsHex;
 
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
@@ -43,7 +46,15 @@ public class JWKCommand implements Runnable {
                 throw new RuntimeException("could not read stdin");
             }
         }
-        System.out.println(jwk.toJSONString());
+        Map<String, Object> jsonObject = jwk.toJSONObject();
+        if(hashAsHex) {
+            Object certFingerprint = jsonObject.get("x5t#S256");
+            if(certFingerprint instanceof String) {
+                byte[] fingerprintBytes = Base64.getUrlDecoder().decode((String) certFingerprint);
+                jsonObject.put("x5t#S256", Hex.toHexString(fingerprintBytes));
+            }
+        }
+        System.out.println(JSONObjectUtils.toJSONString(jsonObject));
     }
 
 }
