@@ -4,7 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
