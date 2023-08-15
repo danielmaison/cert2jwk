@@ -34,7 +34,6 @@ jobs:
           asset_path: ./target/cert-jwk-${{ github.event.release.tag_name }}-runne*
           asset_name: cert2jwk-${{ github.event.release.tag_name }}-${{ matrix.os }}
           asset_content_type: application/octet-stream
-          asset_label: ${{ matrix.os }}
   build-jvm:
     runs-on: ubuntu-latest
     name: Build jvm
