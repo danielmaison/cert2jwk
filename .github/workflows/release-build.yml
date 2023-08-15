@@ -31,8 +31,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./target/cert-jwk-${{ github.event.release.tag_name }}-runne*
-          asset_name: cert2jwk-${{ github.event.release.tag_name }}-${{ matrix.os }}
+          asset_path: ./target/cert-jwk-${{ github.event.release.tag_name }}-runner${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+          asset_name: cert2jwk-${{ github.event.release.tag_name }}-${{ matrix.os }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
           asset_content_type: application/octet-stream
   build-jvm:
     runs-on: ubuntu-latest
