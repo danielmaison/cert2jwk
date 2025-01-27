@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        os: [ macos-latest, windows-latest, ubuntu-latest, macos-13 ]
     steps:
       - uses: actions/checkout@v3
       - uses: graalvm/setup-graalvm@v1
@@ -32,7 +32,7 @@ jobs:
         with:
           upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./target/cert-jwk-${{ github.event.release.tag_name }}-runner${{ matrix.os == 'windows-latest' && '.exe' || '' }}
-          asset_name: cert2jwk-${{ github.event.release.tag_name }}-${{ matrix.os }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+          asset_name: cert2jwk-${{ github.event.release.tag_name }}-${{ matrix.os == 'macos-13' && 'macos-x86' || matrix.os }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
           asset_content_type: application/octet-stream
   build-jvm:
     runs-on: ubuntu-latest
