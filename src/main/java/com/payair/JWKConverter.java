@@ -50,6 +50,7 @@ public class JWKConverter {
         String strippedCert = fileString
                 .replace(CERT_HEADER, "")
                 .replace(CERT_TRAILER, "")
+                .replace("\r", "")
                 .replace("\n", "");
         return Base64.getDecoder().decode(strippedCert);
     }
