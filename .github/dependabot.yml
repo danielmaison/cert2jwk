@@ -9,3 +9,6 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "quarkus.platform.version"
+        versions: ["(3.21,3.26)"]
