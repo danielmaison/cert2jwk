@@ -11,4 +11,9 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "quarkus.platform.version"
-        versions: ["(3.21,3.26)"]
+        # This ignores all versions EXCEPT for 3.20.x and 3.27.x
+        versions:
+          # Ignore versions between 3.20.x and 3.27.x (e.g., 3.21, 3.22, ...)
+          - ">= 3.21.0, < 3.27.0"
+          # Ignore versions at or after 3.28.x (e.g., 3.28, 4.0, ...)
+          - ">= 3.28.0"
