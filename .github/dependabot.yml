@@ -10,10 +10,7 @@ updates:
     schedule:
       interval: "daily"
     ignore:
-      - dependency-name: "quarkus.platform.version"
-        # This ignores all versions EXCEPT for 3.20.x and 3.27.x
-        versions:
-          # Ignore versions between 3.20.x and 3.27.x (e.g., 3.21, 3.22, ...)
-          - ">= 3.21.0, < 3.27.0"
-          # Ignore versions at or after 3.28.x (e.g., 3.28, 4.0, ...)
-          - ">= 3.28.0"
+      - dependency-name: "io.quarkus.platform:*"
+        versions: # for LTS versions see https://github.com/quarkusio/quarkus/wiki/Release-Planning
+          - "[3.28,3.33)" #Ignore versions from 3.28 (inclusive) up to 3.33 (exclusive).
+          - "[3.34,)" #Ignore versions from 3.34 (inclusive) and higher.
