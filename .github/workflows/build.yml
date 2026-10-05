@@ -20,9 +20,9 @@ jobs:
           java-version: '25'
           distribution: 'mandrel'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
-          native-image-pr-reports: 'true'
-          components: 'native-image'
+          # Reports write their JSON to C:\ while the build runs on D:\, which crashes native-image on Windows
+          native-image-job-reports: ${{ runner.os != 'Windows' }}
+          native-image-pr-reports: ${{ runner.os != 'Windows' }}
           cache: 'maven'
       - name: Grant execute permission for mvnw
         run: chmod +x mvnw
