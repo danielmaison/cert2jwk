@@ -10,16 +10,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-latest, macos-15-intel ]
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
     steps:
       - uses: actions/checkout@v3
-      - uses: graalvm/setup-graalvm@v1
+      - uses: graalvm/setup-graalvm@v1.6.7
         with:
-          java-version: '21'
-          distribution: 'graalvm'
+          java-version: '25'
+          distribution: 'mandrel'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
-          components: 'native-image'
+          # Reports write their JSON to C:\ while the build runs on D:\, which crashes native-image on Windows
+          native-image-job-reports: ${{ runner.os != 'Windows' }}
       - name: Grant execute permission for mvnw
         run: chmod +x mvnw
       - name: Build Native
@@ -32,20 +32,18 @@ jobs:
         with:
           upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./target/cert-jwk-${{ github.event.release.tag_name }}-runner${{ matrix.os == 'windows-latest' && '.exe' || '' }}
-          asset_name: cert2jwk-${{ github.event.release.tag_name }}-${{ matrix.os == 'macos-13' && 'macos-x86' || matrix.os }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+          asset_name: cert2jwk-${{ github.event.release.tag_name }}-${{ matrix.os }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
           asset_content_type: application/octet-stream
   build-jvm:
     runs-on: ubuntu-latest
     name: Build jvm
     steps:
       - uses: actions/checkout@v3
-      - uses: graalvm/setup-graalvm@v1
+      - uses: graalvm/setup-graalvm@v1.6.7
         with:
-          java-version: '21'
-          distribution: 'graalvm'
+          java-version: '25'
+          distribution: 'mandrel'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
-          components: 'native-image'
       - name: Grant execute permission for mvnw
         run: chmod +x mvnw
       - name: Build JVM

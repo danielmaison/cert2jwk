@@ -12,16 +12,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest, macos-15-intel]
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
-      - uses: graalvm/setup-graalvm@v1
+      - uses: graalvm/setup-graalvm@v1.6.7
         with:
-          java-version: '21'
-          distribution: 'graalvm'
+          java-version: '25'
+          distribution: 'mandrel'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
-          components: 'native-image'
+          # Reports write their JSON to C:\ while the build runs on D:\, which crashes native-image on Windows
+          native-image-job-reports: ${{ runner.os != 'Windows' }}
+          native-image-pr-reports: ${{ runner.os != 'Windows' }}
+          cache: 'maven'
       - name: Grant execute permission for mvnw
         run: chmod +x mvnw
       - name: Build with maven
