@@ -12,5 +12,5 @@ updates:
     ignore:
       - dependency-name: "io.quarkus.platform:*"
         versions: # for LTS versions see https://github.com/quarkusio/quarkus/wiki/Release-Planning
-          - "[3.28,3.33)" #Ignore versions from 3.28 (inclusive) up to 3.33 (exclusive).
-          - "[3.34,)" #Ignore versions from 3.34 (inclusive) and higher.
+          - "[3.28,3.40)" #Ignore versions from 3.28 (inclusive) up to 3.40 (exclusive).
+          - "[3.41,)" #Ignore versions from 3.41 (inclusive) and higher.
