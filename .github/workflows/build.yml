@@ -15,13 +15,15 @@ jobs:
         os: [macos-latest, windows-latest, ubuntu-latest, macos-15-intel]
     steps:
       - uses: actions/checkout@v3
-      - uses: graalvm/setup-graalvm@v1
+      - uses: graalvm/setup-graalvm@v1.6.7
         with:
           java-version: '25'
           distribution: 'mandrel'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
+          native-image-pr-reports: 'true'
           components: 'native-image'
+          cache: 'maven'
       - name: Grant execute permission for mvnw
         run: chmod +x mvnw
       - name: Build with maven
